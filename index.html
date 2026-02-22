@@ -564,22 +564,22 @@
   <div class="divider"><span>Choose Your Plan</span></div>
 
   <div class="plans" id="planSelector">
-    <label class="plan-card active" onclick="selectPlan(this, 'Basic')">
-      <input type="radio" name="plan" value="Basic" checked>
-      <span class="plan-name">Basic</span>
-      <span class="plan-price">Standard</span>
+    <label class="plan-card active" onclick="selectPlan(this, 'Membership')">
+      <input type="radio" name="plan" value="Membership" checked>
+      <span class="plan-name">Member</span>
+      <span class="plan-price">Membership</span>
       <span class="plan-check"></span>
     </label>
-    <label class="plan-card" onclick="selectPlan(this, 'Premium')">
-      <input type="radio" name="plan" value="Premium">
-      <span class="plan-name">Premium</span>
-      <span class="plan-price">Enhanced</span>
+    <label class="plan-card" onclick="selectPlan(this, 'Actors/Cast')">
+      <input type="radio" name="plan" value="Actors/Cast">
+      <span class="plan-name">Actors</span>
+      <span class="plan-price">Actors / Cast</span>
       <span class="plan-check"></span>
     </label>
-    <label class="plan-card" onclick="selectPlan(this, 'VIP')">
-      <input type="radio" name="plan" value="VIP">
-      <span class="plan-name">VIP</span>
-      <span class="plan-price">Elite</span>
+    <label class="plan-card" onclick="selectPlan(this, 'Executive')">
+      <input type="radio" name="plan" value="Executive">
+      <span class="plan-name">Exec</span>
+      <span class="plan-price">Executive</span>
       <span class="plan-check"></span>
     </label>
   </div>
@@ -616,34 +616,60 @@
     Register & Send to WhatsApp
   </button>
 
-  <div class="divider"><span>Member Database</span></div>
+  <div class="divider"><span>Admin Access</span></div>
 
-  <!-- DATABASE -->
-  <div class="db-section">
-    <div class="db-header">
-      <div class="db-title">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="opacity:0.7"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-        Members
+  <!-- ADMIN LOGIN BOX -->
+  <div id="adminLoginBox" style="background:var(--dark2);border:1px solid var(--border);border-radius:20px;padding:28px 24px;margin-bottom:16px;">
+    <div class="section-label">Admin Login</div>
+    <div class="field" style="margin-bottom:12px;">
+      <label>Password</label>
+      <div style="position:relative;">
+        <input type="password" id="adminPasswordInput" placeholder="Enter admin password"
+          style="padding-right:48px;"
+          onkeydown="if(event.key==='Enter') adminLogin()">
+        <button onclick="togglePwd()" id="eyeBtn"
+          style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:1.1rem;line-height:1;">👁</button>
       </div>
-      <span class="member-count" id="memberCount">0 Members</span>
     </div>
+    <div id="adminError" style="color:#E05A5A;font-size:0.78rem;margin-bottom:14px;display:none;">⚠️ Incorrect password. Try again.</div>
+    <button class="submit-btn" onclick="adminLogin()" style="margin-bottom:0;padding:14px;font-size:1.1rem;">
+      🔐 &nbsp;Login as Admin
+    </button>
+  </div>
 
-    <div class="db-actions">
-      <input class="db-search" type="text" id="searchInput" placeholder="🔍 Search members..." oninput="renderMembers()">
-      <button class="db-btn" onclick="exportCSV()">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-        Export CSV
-      </button>
-      <button class="db-btn" onclick="clearAll()" style="border-color:rgba(255,80,80,0.2);color:rgba(255,80,80,0.5)">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
-        Clear All
-      </button>
-    </div>
+  <!-- DATABASE (hidden until admin logs in) -->
+  <div id="adminDatabaseSection" style="display:none;">
+    <div class="db-section">
+      <div class="db-header">
+        <div class="db-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="opacity:0.7"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+          Members
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="member-count" id="memberCount">0 Members</span>
+          <button class="db-btn" onclick="adminLogout()" style="border-color:rgba(255,80,80,0.25);color:rgba(255,100,100,0.7);padding:4px 10px;font-size:0.65rem;">
+            Logout
+          </button>
+        </div>
+      </div>
 
-    <div class="member-list" id="memberList">
-      <div class="empty-state">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
-        <p>No members yet.<br>Register the first one above!</p>
+      <div class="db-actions">
+        <input class="db-search" type="text" id="searchInput" placeholder="🔍 Search members..." oninput="renderMembers()">
+        <button class="db-btn" onclick="exportCSV()">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+          Export CSV
+        </button>
+        <button class="db-btn" onclick="clearAll()" style="border-color:rgba(255,80,80,0.2);color:rgba(255,80,80,0.5)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+          Clear All
+        </button>
+      </div>
+
+      <div class="member-list" id="memberList">
+        <div class="empty-state">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+          <p>No members yet.<br>Register the first one above!</p>
+        </div>
       </div>
     </div>
   </div>
@@ -656,9 +682,41 @@
 
 <script>
   const WHATSAPP_NUMBER = '23288530401';
+  const ADMIN_PASSWORD = '08072obale04581';
   let members = JSON.parse(localStorage.getItem('cinamagic_members') || '[]');
-  let selectedPlan = 'Basic';
+  let selectedPlan = 'Membership';
   let nextId = parseInt(localStorage.getItem('cinamagic_nextId') || '1');
+  let adminLoggedIn = false;
+
+  function adminLogin() {
+    const input = document.getElementById('adminPasswordInput').value;
+    const errEl = document.getElementById('adminError');
+    if (input === ADMIN_PASSWORD) {
+      adminLoggedIn = true;
+      document.getElementById('adminLoginBox').style.display = 'none';
+      document.getElementById('adminDatabaseSection').style.display = 'block';
+      errEl.style.display = 'none';
+      renderMembers();
+      showToast('Admin access granted');
+    } else {
+      errEl.style.display = 'block';
+      document.getElementById('adminPasswordInput').value = '';
+      document.getElementById('adminPasswordInput').focus();
+    }
+  }
+
+  function adminLogout() {
+    adminLoggedIn = false;
+    document.getElementById('adminDatabaseSection').style.display = 'none';
+    document.getElementById('adminLoginBox').style.display = 'block';
+    document.getElementById('adminPasswordInput').value = '';
+    showToast('Logged out', '#888');
+  }
+
+  function togglePwd() {
+    const inp = document.getElementById('adminPasswordInput');
+    inp.type = inp.type === 'password' ? 'text' : 'password';
+  }
 
   function selectPlan(el, plan) {
     document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('active'));
