@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Cinamagic Inc. — Membership</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #D4A853;
+    --gold-light: #F0C97A;
+    --dark: #0A0A0C;
+    --dark2: #111115;
+    --dark3: #1A1A20;
+    --dark4: #22222A;
+    --text: #E8E4DC;
+    --text-muted: #888880;
+    --border: rgba(212,168,83,0.2);
+    --success: #4CAF82;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--dark);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(212,168,83,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 80%, rgba(212,168,83,0.06) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 0 20px 60px;
+  }
+
+  /* Header */
+  header {
+    text-align: center;
+    padding: 48px 0 36px;
+  }
+
+  .logo-ring {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 2px solid var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    background: rgba(212,168,83,0.08);
+    box-shadow: 0 0 30px rgba(212,168,83,0.2), inset 0 0 20px rgba(212,168,83,0.05);
+  }
+
+  .logo-ring svg {
+    width: 36px;
+    height: 36px;
+    fill: var(--gold);
+  }
+
+  header h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.6rem;
+    letter-spacing: 0.08em;
+    background: linear-gradient(135deg, var(--gold-light), var(--gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  header p {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 300;
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 28px 0;
+  }
+
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+    opacity: 0.4;
+  }
+
+  .divider span {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.7;
+  }
+
+  /* Plan selector */
+  .plans {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+
+  .plan-card {
+    background: var(--dark3);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .plan-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(212,168,83,0.1), transparent);
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+
+  .plan-card:hover::before, .plan-card.active::before { opacity: 1; }
+
+  .plan-card.active {
+    border-color: var(--gold);
+    box-shadow: 0 0 20px rgba(212,168,83,0.15);
+  }
+
+  .plan-card input[type="radio"] { display: none; }
+
+  .plan-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.05em;
+    color: var(--text);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .plan-card.active .plan-name { color: var(--gold-light); }
+
+  .plan-price {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-weight: 300;
+  }
+
+  .plan-check {
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: scale(0.5);
+    transition: all 0.2s;
+  }
+
+  .plan-card.active .plan-check {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .plan-check::after {
+    content: '✓';
+    font-size: 9px;
+    color: var(--dark);
+    font-weight: 700;
+  }
+
+  /* Form */
+  .form-section {
+    background: var(--dark2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px 24px;
+    margin-bottom: 16px;
+  }
+
+  .section-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.8;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .field {
+    margin-bottom: 18px;
+  }
+
+  .field:last-child { margin-bottom: 0; }
+
+  .field label {
+    display: block;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  .field input, .field select {
+    width: 100%;
+    background: var(--dark4);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 13px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .field select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888880' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+    cursor: pointer;
+  }
+
+  .field select option {
+    background: var(--dark4);
+    color: var(--text);
+  }
+
+  .field input:focus, .field select:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(212,168,83,0.1);
+  }
+
+  .field input::placeholder { color: rgba(136,136,128,0.5); font-weight: 300; }
+
+  .field input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(0.5) sepia(1) saturate(2) hue-rotate(5deg);
+    cursor: pointer;
+    opacity: 0.6;
+  }
+
+  /* Submit button */
+  .submit-btn {
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(135deg, var(--gold), #B8922A);
+    border: none;
+    border-radius: 14px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 0.12em;
+    color: var(--dark);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    box-shadow: 0 8px 30px rgba(212,168,83,0.25);
+    margin-bottom: 16px;
+  }
+
+  .submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(212,168,83,0.35);
+  }
+
+  .submit-btn:active { transform: translateY(0); }
+
+  .submit-btn svg { width: 20px; height: 20px; }
+
+  /* DB Section */
+  .db-section {
+    background: var(--dark2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    margin-top: 32px;
+  }
+
+  .db-header {
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: gap;
+    gap: 10px;
+  }
+
+  .db-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.08em;
+    color: var(--gold-light);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .member-count {
+    background: rgba(212,168,83,0.15);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 0.75rem;
+    color: var(--gold);
+    font-weight: 500;
+  }
+
+  .db-actions {
+    display: flex;
+    gap: 8px;
+    padding: 14px 24px;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+
+  .db-btn {
+    background: var(--dark4);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .db-btn:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  .db-search {
+    flex: 1;
+    min-width: 140px;
+    background: var(--dark4);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .db-search:focus { border-color: var(--gold); }
+  .db-search::placeholder { color: rgba(136,136,128,0.4); }
+
+  .member-list {
+    max-height: 400px;
+    overflow-y: auto;
+  }
+
+  .member-list::-webkit-scrollbar { width: 4px; }
+  .member-list::-webkit-scrollbar-track { background: transparent; }
+  .member-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .member-item {
+    padding: 16px 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    animation: fadeIn 0.3s ease;
+    transition: background 0.15s;
+  }
+
+  .member-item:hover { background: rgba(212,168,83,0.03); }
+  .member-item:last-child { border-bottom: none; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .member-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(212,168,83,0.2), rgba(212,168,83,0.05));
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem;
+    color: var(--gold);
+    flex-shrink: 0;
+    letter-spacing: 0.05em;
+  }
+
+  .member-info { flex: 1; min-width: 0; }
+
+  .member-name {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .member-meta {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    font-weight: 300;
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .member-badge {
+    background: rgba(212,168,83,0.12);
+    border: 1px solid rgba(212,168,83,0.25);
+    border-radius: 6px;
+    padding: 3px 8px;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gold);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .member-delete {
+    background: none;
+    border: none;
+    color: rgba(255,80,80,0.4);
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 4px;
+    transition: color 0.2s;
+    flex-shrink: 0;
+  }
+
+  .member-delete:hover { color: rgba(255,80,80,0.9); }
+
+  .empty-state {
+    padding: 48px 24px;
+    text-align: center;
+    color: var(--text-muted);
+  }
+
+  .empty-state svg {
+    width: 40px;
+    height: 40px;
+    opacity: 0.2;
+    margin-bottom: 12px;
+  }
+
+  .empty-state p { font-size: 0.85rem; font-weight: 300; }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--success);
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+    transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+    z-index: 100;
+    white-space: nowrap;
+  }
+
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* ID counter label */
+  .id-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    text-align: right;
+    margin-top: -12px;
+    margin-bottom: 20px;
+  }
+
+  footer {
+    text-align: center;
+    padding: 32px 0 0;
+    font-size: 0.72rem;
+    color: rgba(136,136,128,0.3);
+    letter-spacing: 0.08em;
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo-ring">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
+      </svg>
+    </div>
+    <h1>Cinamagic Inc.</h1>
+    <p>Membership Registration</p>
+  </header>
+
+  <!-- MEMBERSHIP PLAN SELECTOR -->
+  <div class="divider"><span>Choose Your Plan</span></div>
+
+  <div class="plans" id="planSelector">
+    <label class="plan-card active" onclick="selectPlan(this, 'Basic')">
+      <input type="radio" name="plan" value="Basic" checked>
+      <span class="plan-name">Basic</span>
+      <span class="plan-price">Standard</span>
+      <span class="plan-check"></span>
+    </label>
+    <label class="plan-card" onclick="selectPlan(this, 'Premium')">
+      <input type="radio" name="plan" value="Premium">
+      <span class="plan-name">Premium</span>
+      <span class="plan-price">Enhanced</span>
+      <span class="plan-check"></span>
+    </label>
+    <label class="plan-card" onclick="selectPlan(this, 'VIP')">
+      <input type="radio" name="plan" value="VIP">
+      <span class="plan-name">VIP</span>
+      <span class="plan-price">Elite</span>
+      <span class="plan-check"></span>
+    </label>
+  </div>
+
+  <!-- REGISTRATION FORM -->
+  <div class="form-section">
+    <div class="section-label">Personal Details</div>
+
+    <div class="field">
+      <label>Full Name</label>
+      <input type="text" id="fullName" placeholder="Enter your full name" autocomplete="name">
+    </div>
+    <div class="field">
+      <label>Date of Birth</label>
+      <input type="date" id="dob">
+    </div>
+    <div class="field">
+      <label>Phone Number</label>
+      <input type="tel" id="phone" placeholder="+232 XX XXX XXXX" autocomplete="tel">
+    </div>
+    <div class="field">
+      <label>Email Address</label>
+      <input type="email" id="email" placeholder="you@example.com" autocomplete="email">
+    </div>
+    <div class="field">
+      <label>Home Address</label>
+      <input type="text" id="address" placeholder="Street, City" autocomplete="street-address">
+    </div>
+  </div>
+
+  <!-- SUBMIT -->
+  <button class="submit-btn" onclick="submitMembership()">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.116 1.527 5.845L.057 23.5l5.797-1.523A11.952 11.952 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.854 0-3.597-.5-5.1-1.37l-.364-.214-3.44.904.918-3.356-.236-.38A9.957 9.957 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+    Register & Send to WhatsApp
+  </button>
+
+  <div class="divider"><span>Member Database</span></div>
+
+  <!-- DATABASE -->
+  <div class="db-section">
+    <div class="db-header">
+      <div class="db-title">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="opacity:0.7"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+        Members
+      </div>
+      <span class="member-count" id="memberCount">0 Members</span>
+    </div>
+
+    <div class="db-actions">
+      <input class="db-search" type="text" id="searchInput" placeholder="🔍 Search members..." oninput="renderMembers()">
+      <button class="db-btn" onclick="exportCSV()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+        Export CSV
+      </button>
+      <button class="db-btn" onclick="clearAll()" style="border-color:rgba(255,80,80,0.2);color:rgba(255,80,80,0.5)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+        Clear All
+      </button>
+    </div>
+
+    <div class="member-list" id="memberList">
+      <div class="empty-state">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+        <p>No members yet.<br>Register the first one above!</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>© 2025 Cinamagic Inc. · Membership System</footer>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+  const WHATSAPP_NUMBER = '23288530401';
+  let members = JSON.parse(localStorage.getItem('cinamagic_members') || '[]');
+  let selectedPlan = 'Basic';
+  let nextId = parseInt(localStorage.getItem('cinamagic_nextId') || '1');
+
+  function selectPlan(el, plan) {
+    document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+    selectedPlan = plan;
+  }
+
+  function getVal(id) {
+    return document.getElementById(id).value.trim();
+  }
+
+  function showToast(msg, color = '#4CAF82') {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.style.background = color;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  function formatDate(dateStr) {
+    if (!dateStr) return '';
+    const d = new Date(dateStr);
+    return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+  }
+
+  function submitMembership() {
+    const fullName = getVal('fullName');
+    const dob = getVal('dob');
+    const phone = getVal('phone');
+    const email = getVal('email');
+    const address = getVal('address');
+
+    if (!fullName || !phone) {
+      showToast('⚠️ Name & Phone are required', '#E05A5A');
+      return;
+    }
+
+    const id = 'CM' + String(nextId).padStart(4, '0');
+    const joinDate = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+
+    const member = { id, fullName, dob, phone, email, address, plan: selectedPlan, joinDate };
+    members.unshift(member);
+    nextId++;
+
+    localStorage.setItem('cinamagic_members', JSON.stringify(members));
+    localStorage.setItem('cinamagic_nextId', String(nextId));
+
+    // Build WhatsApp message
+    const msg = [
+      `🎬 *CINAMAGIC INC. — NEW MEMBER REGISTRATION*`,
+      `━━━━━━━━━━━━━━━━━━`,
+      `🆔 Member ID: *${id}*`,
+      `👤 Name: *${fullName}*`,
+      `🎂 Date of Birth: ${dob ? formatDate(dob) : 'N/A'}`,
+      `📱 Phone: ${phone}`,
+      `📧 Email: ${email || 'N/A'}`,
+      `🏠 Address: ${address || 'N/A'}`,
+      `⭐ Plan: *${selectedPlan}*`,
+      `📅 Joined: ${joinDate}`,
+      `━━━━━━━━━━━━━━━━━━`,
+      `_Sent via Cinamagic Membership System_`
+    ].join('\n');
+
+    const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+    window.open(waUrl, '_blank');
+
+    // Reset form
+    ['fullName', 'dob', 'phone', 'email', 'address'].forEach(f => {
+      document.getElementById(f).value = '';
+    });
+    selectPlan(document.querySelector('.plan-card'), 'Basic');
+
+    renderMembers();
+    showToast('✅ Member added! Opening WhatsApp…');
+  }
+
+  function renderMembers() {
+    const search = document.getElementById('searchInput').value.toLowerCase();
+    const list = document.getElementById('memberList');
+    const filtered = members.filter(m =>
+      m.fullName.toLowerCase().includes(search) ||
+      m.phone.includes(search) ||
+      m.plan.toLowerCase().includes(search) ||
+      m.id.toLowerCase().includes(search)
+    );
+
+    document.getElementById('memberCount').textContent =
+      members.length + ' Member' + (members.length !== 1 ? 's' : '');
+
+    if (filtered.length === 0) {
+      list.innerHTML = `<div class="empty-state">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+        <p>${search ? 'No members match your search.' : 'No members yet.<br>Register the first one above!'}</p>
+      </div>`;
+      return;
+    }
+
+    list.innerHTML = filtered.map((m, i) => {
+      const initials = m.fullName.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+      return `
+        <div class="member-item">
+          <div class="member-avatar">${initials}</div>
+          <div class="member-info">
+            <div class="member-name">${m.fullName}</div>
+            <div class="member-meta">${m.id} · ${m.phone} · Joined ${m.joinDate}</div>
+          </div>
+          <div class="member-badge">${m.plan}</div>
+          <button class="member-delete" onclick="deleteMember('${m.id}')" title="Remove member">✕</button>
+        </div>`;
+    }).join('');
+  }
+
+  function deleteMember(id) {
+    if (!confirm('Remove this member from the database?')) return;
+    members = members.filter(m => m.id !== id);
+    localStorage.setItem('cinamagic_members', JSON.stringify(members));
+    renderMembers();
+    showToast('Member removed', '#E05A5A');
+  }
+
+  function clearAll() {
+    if (!confirm('Delete ALL members? This cannot be undone.')) return;
+    members = [];
+    localStorage.setItem('cinamagic_members', JSON.stringify(members));
+    renderMembers();
+    showToast('Database cleared', '#E05A5A');
+  }
+
+  function exportCSV() {
+    if (members.length === 0) { showToast('No members to export', '#E05A5A'); return; }
+    const headers = ['ID', 'Full Name', 'Date of Birth', 'Phone', 'Email', 'Address', 'Plan', 'Join Date'];
+    const rows = members.map(m =>
+      [m.id, m.fullName, m.dob, m.phone, m.email, m.address, m.plan, m.joinDate]
+        .map(v => `"${(v || '').replace(/"/g, '""')}"`)
+        .join(',')
+    );
+    const csv = [headers.join(','), ...rows].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `cinamagic_members_${new Date().toISOString().slice(0,10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('📊 CSV exported!');
+  }
+
+  // Init
+  renderMembers();
+</script>
+</body>
+</html>
