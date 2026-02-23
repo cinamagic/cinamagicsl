@@ -1330,11 +1330,11 @@
     // Try deep link first, fallback to tel: with instructions
     let deepLink;
     if (network === 'orange') {
-      // Orange Money Sierra Leone USSD / deep link
-      deepLink = 'tel:*144*1*' + number + '*' + amount + '%23';
+      // Orange Money Sierra Leone USSD
+      deepLink = 'tel:*144%23';
     } else {
       // Africell Money Sierra Leone USSD
-      deepLink = 'tel:*555*1*' + number + '*' + amount + '%23';
+      deepLink = 'tel:*161%23';
     }
 
     // Show confirmation toast
