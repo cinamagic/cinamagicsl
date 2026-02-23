@@ -39,8 +39,8 @@ body {
   pointer-events: none;
   z-index: 9999;
   transform: translate(-50%,-50%);
-  transition: transform 0.1s, width 0.2s, height 0.2s, background 0.2s;
-  mix-blend-mode: difference;
+  transition: width 0.2s, height 0.2s, background 0.2s;
+  box-shadow: 0 0 6px rgba(232,20,74,0.8);
 }
 .cursor-ring {
   width: 36px; height: 36px;
@@ -1114,7 +1114,7 @@ footer {
   <div class="productions-grid">
     <div class="prod-card">
       <!-- REPLACE: swap src with your own poster image -->
-      <img src="https://img.youtube.com/vi/7JqzfZjn19o/maxresdefault.jpg" alt="Production still" class="img-placeholder" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;">
+      <img src="https://picsum.photos/seed/cinema1/600/400" alt="Production still" class="img-placeholder" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;">
       <div class="prod-overlay">
         <div class="prod-genre">Drama · Feature Film</div>
         <div class="prod-title">Echoes of Freetown</div>
@@ -1123,7 +1123,7 @@ footer {
     </div>
     <div class="prod-card">
       <!-- REPLACE: swap src with your own poster image -->
-      <img src="https://img.youtube.com/vi/BikXKdWHDXU/maxresdefault.jpg" alt="Production still" class="img-placeholder" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;">
+      <img src="https://picsum.photos/seed/cinema2/600/400" alt="Production still" class="img-placeholder" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;">
       <div class="prod-overlay">
         <div class="prod-genre">Thriller · Short Film</div>
         <div class="prod-title">The Last River</div>
@@ -1132,7 +1132,7 @@ footer {
     </div>
     <div class="prod-card">
       <!-- REPLACE: swap src with your own poster image -->
-      <img src="https://img.youtube.com/vi/J9bdHxZUpPs/maxresdefault.jpg" alt="Production still" class="img-placeholder" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;">
+      <img src="https://picsum.photos/seed/cinema3/600/400" alt="Production still" class="img-placeholder" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;">
       <div class="prod-overlay">
         <div class="prod-genre">Documentary</div>
         <div class="prod-title">Voices of the Peninsula</div>
@@ -1141,7 +1141,7 @@ footer {
     </div>
     <div class="prod-card">
       <!-- REPLACE: swap src with your own poster image -->
-      <img src="https://img.youtube.com/vi/LnedAAL3UHs/maxresdefault.jpg" alt="Production still" class="img-placeholder" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;">
+      <img src="https://picsum.photos/seed/cinema4/600/400" alt="Production still" class="img-placeholder" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;">
       <div class="prod-overlay">
         <div class="prod-genre">Romance · Feature Film</div>
         <div class="prod-title">Colours of Lumley</div>
@@ -1150,7 +1150,7 @@ footer {
     </div>
     <div class="prod-card">
       <!-- REPLACE: swap src with your own poster image -->
-      <img src="https://img.youtube.com/vi/5M0OGr60zq8/maxresdefault.jpg" alt="Production still" class="img-placeholder" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;">
+      <img src="https://picsum.photos/seed/cinema5/600/400" alt="Production still" class="img-placeholder" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;">
       <div class="prod-overlay">
         <div class="prod-genre">Adventure · Short Film</div>
         <div class="prod-title">Beyond the Shore</div>
@@ -1159,7 +1159,7 @@ footer {
     </div>
     <div class="prod-card">
       <!-- REPLACE: swap src with your own poster image -->
-      <img src="https://img.youtube.com/vi/4rouygg8zLI/maxresdefault.jpg" alt="Production still" class="img-placeholder" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;">
+      <img src="https://picsum.photos/seed/cinema6/600/400" alt="Production still" class="img-placeholder" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;">
       <div class="prod-overlay">
         <div class="prod-genre">Music Documentary</div>
         <div class="prod-title">Rhythm of Salone</div>
@@ -1177,7 +1177,7 @@ footer {
     <div class="team-card">
       <div class="team-img-wrap">
         <!-- REPLACE: swap src with your team member's photo -->
-        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Executive Director">
+        <img src="https://picsum.photos/seed/team1/200/200" alt="Executive Director">
       </div>
       <div class="team-name">Executive Director</div>
       <div class="team-role">Leadership</div>
@@ -1185,7 +1185,7 @@ footer {
     <div class="team-card">
       <div class="team-img-wrap">
         <!-- REPLACE: swap src with your team member's photo -->
-        <img src="https://randomuser.me/api/portraits/men/44.jpg" alt="Lead Director">
+        <img src="https://picsum.photos/seed/team2/200/200" alt="Lead Director">
       </div>
       <div class="team-name">Lead Director</div>
       <div class="team-role">Direction</div>
@@ -1193,7 +1193,7 @@ footer {
     <div class="team-card">
       <div class="team-img-wrap">
         <!-- REPLACE: swap src with your team member's photo -->
-        <img src="https://randomuser.me/api/portraits/women/28.jpg" alt="Casting Director">
+        <img src="https://picsum.photos/seed/team3/200/200" alt="Casting Director">
       </div>
       <div class="team-name">Casting Director</div>
       <div class="team-role">Talent & Cast</div>
@@ -1201,7 +1201,7 @@ footer {
     <div class="team-card">
       <div class="team-img-wrap">
         <!-- REPLACE: swap src with your team member's photo -->
-        <img src="https://randomuser.me/api/portraits/men/55.jpg" alt="Head of Post">
+        <img src="https://picsum.photos/seed/team4/200/200" alt="Head of Post">
       </div>
       <div class="team-name">Head of Post</div>
       <div class="team-role">Post-Production</div>
